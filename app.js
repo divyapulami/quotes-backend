@@ -1,3 +1,6 @@
+const dbConnection = require ("./db");
+const quote = require("./models/quote")
+
 // ============================================================
 // QUOTES BACKEND
 //
@@ -50,9 +53,12 @@ app.use(cors())          // allows the React frontend to call this server
 // Hint: find the Sequelize method that fetches all rows from a table.
 // ------------------------------------------------------------
 app.get('/api/quotes', async (req, res, next) => {
-  try {
+  try { 
+      const getQuotes = await quote.findAll()
 
-  } catch (error) {
+      return res.json(getQuotes);
+  } 
+  catch (error) {
     next(error)
   }
 })
@@ -70,12 +76,17 @@ app.get('/api/quotes', async (req, res, next) => {
 // ------------------------------------------------------------
 app.post('/api/quotes', async (req, res, next) => {
   try {
+      const { text, author, } = req.body
 
+      const newQuote = await quote.create({
+          text,
+          author
+        })
+      res.status(201).json(newQuote);
   } catch (error) {
     next(error)
   }
 })
-
 
 // ------------------------------------------------------------
 // DELETE /api/quotes/:id
@@ -91,7 +102,13 @@ app.post('/api/quotes', async (req, res, next) => {
 // ------------------------------------------------------------
 app.delete('/api/quotes/:id', async (req, res, next) => {
   try {
-
+      const getQuoteById = Number(req.params.id)
+      const findQuote = await quote.findByPk(getQuoteById)
+      if (!findQuote) {
+        return res.status(404).json()
+      }
+      await findQuote.destroy()
+      res.status(204).json();
   } catch (error) {
     next(error)
   }
@@ -127,9 +144,9 @@ app.use((error, req, res, next) => {
 // ============================================================
 async function startApp() {
   // connect to your db here before the express server listens
+  await dbConnection.sync()
 
-
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+   app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 }
 
 startApp()
