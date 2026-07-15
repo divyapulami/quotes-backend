@@ -15,6 +15,7 @@
 // Never create a second Sequelize connection in another file.
 // ============================================================
 const { Sequelize } = require ('sequelize')
+// require('dotenv').config()
 const dbConnection = new Sequelize (process.env.DATABASE_URL, {
 logging: false
 })

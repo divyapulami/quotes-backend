@@ -1,5 +1,3 @@
-const dbConnection = require ("./db");
-const quote = require("./models/quote")
 
 // ============================================================
 // QUOTES BACKEND
@@ -14,11 +12,12 @@ const quote = require("./models/quote")
 //
 // To start the server: node app.js
 // ============================================================
-
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-
+require('dotenv').config()
+const dbConnection = require ("./db");
+const quote = require("./models/quote")
 // ------------------------------------------------------------
 // STEP 1 — Import your database connection and Quote model
 
