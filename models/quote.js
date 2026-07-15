@@ -18,9 +18,9 @@
 // ============================================================
 
 const { DataTypes } = require ("sequelize");
-const dbConnection = require  ("../db");
+const db = require  ("../db");
 
-const quoteModel = dbConnection.define("quotes", {
+const quoteModel = db.define("quotes", {
     text: {
         type: DataTypes.STRING,
         allowNull: false
